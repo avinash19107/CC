@@ -68,7 +68,7 @@ This repository contains all assignments, laboratory experiments, and course pro
 
 ## 🌐 Dashboard
 
-Access the central dashboard: [CSA15 Dashboard](https://kasuk.github.io/CSA15-Cloud-Computing-Lab/)
+Access the central dashboard: [CSA15 Dashboard](https://avinash19107.github.io/CSA15-Cloud-Computing-Lab/)
 
 ## 🛠️ Technologies Used
 
