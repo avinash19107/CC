@@ -1,14 +1,55 @@
-import React, { useState } from 'react';
+import React, { useState, Component } from 'react';
 import { 
   Shield, Activity, Crosshair, Sparkles, GitBranch, 
-  Sun, Moon, ExternalLink, Terminal, Layers
+  Sun, Moon, ExternalLink, Terminal, AlertTriangle, RefreshCw
 } from 'lucide-react';
 import Overview from './pages/Overview';
 import Detection from './pages/Detection';
 import Threats from './pages/Threats';
 import Drift from './pages/Drift';
 
-export default function App() {
+// React Error Boundary to prevent any white screen
+class ErrorBoundary extends Component {
+  constructor(props) {
+    super(props);
+    this.state = { hasError: false, error: null };
+  }
+
+  static getDerivedStateFromError(error) {
+    return { hasError: true, error };
+  }
+
+  componentDidCatch(error, errorInfo) {
+    console.error("Dashboard caught error:", error, errorInfo);
+  }
+
+  render() {
+    if (this.state.hasError) {
+      return (
+        <div className="min-h-screen bg-[#0b0f19] text-gray-100 flex items-center justify-center p-6">
+          <div className="max-w-md w-full p-6 rounded-2xl bg-[#111827] border border-red-500/30 shadow-2xl text-center space-y-4">
+            <div className="p-3 bg-red-500/20 text-red-400 rounded-full w-fit mx-auto">
+              <AlertTriangle className="w-8 h-8" />
+            </div>
+            <h2 className="text-lg font-bold">Dashboard Encountered an Issue</h2>
+            <p className="text-xs text-gray-400 font-mono">
+              {this.state.error?.message || "An unexpected rendering error occurred."}
+            </p>
+            <button
+              onClick={() => { this.setState({ hasError: false }); window.location.reload(); }}
+              className="px-4 py-2 bg-indigo-600 hover:bg-indigo-700 text-white rounded-lg text-xs font-semibold flex items-center gap-2 mx-auto"
+            >
+              <RefreshCw className="w-4 h-4" /> Reload Dashboard
+            </button>
+          </div>
+        </div>
+      );
+    }
+    return this.props.children;
+  }
+}
+
+function MainApp() {
   const [activeTab, setActiveTab] = useState('overview');
   const [darkMode, setDarkMode] = useState(true);
   const apiBase = import.meta.env.VITE_API_BASE || '/api';
@@ -36,17 +77,6 @@ export default function App() {
 
         {/* Global Controls */}
         <div className="flex items-center space-x-3">
-          <a
-            href="http://localhost:8000/docs"
-            target="_blank"
-            rel="noreferrer"
-            className="flex items-center space-x-1.5 px-3 py-1.5 rounded-lg text-xs font-medium text-gray-600 dark:text-gray-300 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
-          >
-            <Terminal className="w-3.5 h-3.5 text-indigo-400" />
-            <span>FastAPI Docs</span>
-            <ExternalLink className="w-3 h-3 text-gray-400" />
-          </a>
-
           <button
             onClick={() => setDarkMode(!darkMode)}
             className="p-2 rounded-lg text-gray-500 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-800 transition-colors"
@@ -133,3 +163,10 @@ export default function App() {
   );
 }
 
+export default function App() {
+  return (
+    <ErrorBoundary>
+      <MainApp />
+    </ErrorBoundary>
+  );
+}
