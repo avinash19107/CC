@@ -11,7 +11,7 @@ import Drift from './pages/Drift';
 export default function App() {
   const [activeTab, setActiveTab] = useState('overview');
   const [darkMode, setDarkMode] = useState(true);
-  const apiBase = '/api';
+  const apiBase = import.meta.env.VITE_API_BASE || '/api';
 
   return (
     <div className={`min-h-screen ${darkMode ? 'dark bg-[#0b0f19] text-gray-100' : 'bg-gray-50 text-gray-900'}`}>
