@@ -1,0 +1,13 @@
+data/
+kaggle.json
+*.pyc
+__pycache__/
+venv/
+.env
+dist/
+node_modules/
+*.joblib
+!model_pack/*.joblib
+
+*.db
+*.sqlite3

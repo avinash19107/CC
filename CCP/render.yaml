@@ -1,0 +1,17 @@
+services:
+  - type: web
+    name: cloud-ids-backend
+    runtime: docker
+    dockerfilePath: backend/Dockerfile
+    dockerContext: .
+    region: oregon
+    plan: free
+    branch: main
+    envVars:
+      - key: DATABASE_MODE
+        value: sqlite
+      - key: PORT
+        value: "8000"
+      - key: DEBUG
+        value: "False"
+

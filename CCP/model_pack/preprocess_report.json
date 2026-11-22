@@ -1,0 +1,63 @@
+{
+  "raw_rows_total": 2830743,
+  "rows_dropped_null_or_inf": 2867,
+  "duplicates_removed": 401331,
+  "clean_unique_rows": 2426545,
+  "sample_size": 300055,
+  "demo_flows_count": 500,
+  "class_distribution": {
+    "Benign (0)": 247624,
+    "Malicious (1)": 52431
+  },
+  "attack_type_distribution": {
+    "BENIGN": 247624,
+    "DoS Hulk": 21156,
+    "DDoS": 15824,
+    "PortScan": 11215,
+    "DoS GoldenEye": 1271,
+    "FTP-Patator": 733,
+    "DoS slowloris": 652,
+    "DoS Slowhttptest": 641,
+    "SSH-Patator": 383,
+    "Bot": 240,
+    "Web Attack - Brute Force": 175,
+    "Web Attack - XSS": 78,
+    "Infiltration": 36,
+    "Web Attack - SQL Injection": 16,
+    "Heartbleed": 11
+  },
+  "day_distribution": {
+    "Friday": 74222,
+    "Wednesday": 69696,
+    "Monday": 59914,
+    "Tuesday": 48503,
+    "Thursday": 47720
+  },
+  "selected_features": [
+    "Destination Port",
+    "Flow Duration",
+    "Total Fwd Packets",
+    "Total Backward Packets",
+    "Total Length of Fwd Packets",
+    "Total Length of Bwd Packets",
+    "Fwd Packet Length Max",
+    "Fwd Packet Length Min",
+    "Fwd Packet Length Mean",
+    "Bwd Packet Length Max",
+    "Bwd Packet Length Min",
+    "Bwd Packet Length Mean",
+    "Flow Bytes/s",
+    "Flow Packets/s",
+    "Flow IAT Mean",
+    "Flow IAT Max",
+    "Fwd IAT Mean",
+    "Bwd IAT Mean",
+    "FIN Flag Count",
+    "SYN Flag Count",
+    "RST Flag Count",
+    "PSH Flag Count",
+    "ACK Flag Count",
+    "URG Flag Count",
+    "Protocol"
+  ]
+}
