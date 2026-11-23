@@ -15,8 +15,10 @@ export default function Threats({ apiBase }) {
   const [filter, setFilter] = useState('All');
   const [loading, setLoading] = useState(true);
 
+  const apiUrl = (path) => `${(apiBase || '').replace(/\/+$/, '')}/${(path || '').replace(/^\/+/, '')}`;
+
   const fetchAlerts = () => {
-    fetch(`${apiBase}/alerts?limit=25&risk_level=${filter}`)
+    fetch(apiUrl(`alerts?limit=25&risk_level=${filter}`))
       .then(r => r.ok ? r.text() : null)
       .then(text => {
         if (text) {
@@ -42,7 +44,7 @@ export default function Threats({ apiBase }) {
 
   useEffect(() => {
     fetchAlerts();
-    fetch(`${apiBase}/explain/global`)
+    fetch(apiUrl('explain/global'))
       .then(r => r.ok ? r.text() : null)
       .then(text => {
         if (text) {

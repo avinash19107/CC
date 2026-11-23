@@ -3,7 +3,8 @@ backend/app/main.py
 FastAPI Application Entrypoint for the Cloud-Based IDS Analytics Platform.
 """
 
-from fastapi import FastAPI
+import re
+from fastapi import FastAPI, Request
 from fastapi.middleware.cors import CORSMiddleware
 from backend.app.config import settings
 from backend.app.routes import ingest, predict, alerts, drift, stats
@@ -13,6 +14,14 @@ app = FastAPI(
     version=settings.app_version,
     description="Intelligent Network Traffic Monitoring and Intrusion Detection System using Big Data Analytics, ML, SHAP, and Concept Drift Monitoring."
 )
+
+# Normalize duplicate slashes in incoming request paths (e.g., //stats -> /stats)
+@app.middleware("http")
+async def clean_path_middleware(request: Request, call_next):
+    if "//" in request.scope.get("path", ""):
+        request.scope["path"] = re.sub(r"/+", "/", request.scope["path"])
+    response = await call_next(request)
+    return response
 
 # Enable CORS for Frontend
 app.add_middleware(

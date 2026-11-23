@@ -54,20 +54,18 @@ function MainApp() {
   const [darkMode, setDarkMode] = useState(true);
 
   // Smart API Base URL:
-  // 1. Explicit VITE_API_BASE environment variable if provided
-  // 2. If running locally (localhost / 127.0.0.1), use http://127.0.0.1:8000
-  // 3. Otherwise (on Vercel or cloud deployment), use the live Render backend URL: https://cloud-ids-backend.onrender.com
+  // Automatically strips any trailing slashes to avoid 404 errors (e.g. //stats)
   const getApiBase = () => {
-    if (import.meta.env.VITE_API_BASE) {
-      return import.meta.env.VITE_API_BASE;
-    }
-    if (typeof window !== 'undefined') {
+    let base = import.meta.env.VITE_API_BASE;
+    if (!base && typeof window !== 'undefined') {
       const host = window.location.hostname;
       if (host === 'localhost' || host === '127.0.0.1') {
-        return 'http://127.0.0.1:8000';
+        base = 'http://127.0.0.1:8000';
+      } else {
+        base = 'https://cloud-ids-backend.onrender.com';
       }
     }
-    return 'https://cloud-ids-backend.onrender.com';
+    return (base || 'https://cloud-ids-backend.onrender.com').trim().replace(/\/+$/, '');
   };
   const apiBase = getApiBase();
 
@@ -109,7 +107,7 @@ function MainApp() {
         <div className="flex items-center space-x-2.5">
           <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-[11px] font-mono text-slate-400">
             <Radio className="w-3 h-3 text-emerald-400" />
-            <span>API: {apiBase.replace(/^https?:\/\//, '')}</span>
+            <span>API: {apiBase.replace(/^https?:\/\//, '').replace(/\/+$/, '')}</span>
           </div>
 
           <button

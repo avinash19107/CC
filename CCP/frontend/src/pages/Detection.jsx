@@ -21,10 +21,11 @@ const FALLBACK_METRICS = {
 
 export default function Detection({ apiBase }) {
   const [metrics, setMetrics] = useState(FALLBACK_METRICS);
-  const [loading, setLoading] = useState(false);
+
+  const apiUrl = (path) => `${(apiBase || '').replace(/\/+$/, '')}/${(path || '').replace(/^\/+/, '')}`;
 
   useEffect(() => {
-    fetch(`${apiBase}/metrics`)
+    fetch(apiUrl('metrics'))
       .then(res => res.ok ? res.text() : null)
       .then(text => {
         if (text) {

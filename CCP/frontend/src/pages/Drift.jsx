@@ -16,6 +16,8 @@ export default function Drift({ apiBase }) {
   const [isAdapting, setIsAdapting] = useState(false);
   const [message, setMessage] = useState(null);
 
+  const apiUrl = (path) => `${(apiBase || '').replace(/\/+$/, '')}/${(path || '').replace(/^\/+/, '')}`;
+
   const fetchDrift = async () => {
     try {
       setIsChecking(true);
@@ -29,9 +31,9 @@ export default function Drift({ apiBase }) {
       };
 
       const [resDrift, resMetrics, resStats] = await Promise.all([
-        safeFetch(`${apiBase}/drift/check`, { method: 'POST' }),
-        safeFetch(`${apiBase}/metrics`),
-        safeFetch(`${apiBase}/stats`)
+        safeFetch(apiUrl('drift/check'), { method: 'POST' }),
+        safeFetch(apiUrl('metrics')),
+        safeFetch(apiUrl('stats'))
       ]);
       if (resDrift) setDriftData(resDrift);
       if (resMetrics) setMetrics(resMetrics);
@@ -51,7 +53,7 @@ export default function Drift({ apiBase }) {
     const nextModel = activeModel === 'rf_v1' ? 'rf_v2' : 'rf_v1';
     setIsAdapting(true);
     try {
-      const res = await fetch(`${apiBase}/model/switch`, {
+      const res = await fetch(apiUrl('model/switch'), {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
         body: JSON.stringify({ target_model: nextModel })
