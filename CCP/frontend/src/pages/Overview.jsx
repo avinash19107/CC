@@ -164,28 +164,9 @@ export default function Overview({ apiBase }) {
             <Radio className={`w-4 h-4 ${isSimulating ? 'animate-pulse' : ''}`} />
           </div>
           <div>
-            <div className="flex items-center gap-2">
-              <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
-                Traffic Replay Engine
-              </span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${
-                isSimulating 
-                  ? 'bg-red-500/10 text-red-400 border border-red-500/20' 
-                  : 'bg-slate-800 text-slate-400'
-              }`}>
-                {isSimulating ? 'STREAMING' : 'IDLE'}
-              </span>
-              <span className={`text-[10px] px-2 py-0.5 rounded-full font-mono font-medium ${
-                backendConnected 
-                  ? 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/20' 
-                  : 'bg-amber-500/10 text-amber-400 border border-amber-500/20'
-              }`}>
-                {backendConnected ? 'ONLINE' : 'CONNECTING...'}
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-400 font-mono">
-              Replays 500 held-out flows (70% Benign, 30% Attack) • Target: <code className="text-indigo-400">{apiBase.replace(/^https?:\/\//, '').replace(/\/+$/, '')}</code>
-            </p>
+            <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+              Traffic Replay Engine
+            </span>
           </div>
         </div>
 
@@ -354,96 +335,57 @@ export default function Overview({ apiBase }) {
         </div>
       </div>
 
-      {/* Cloud Architecture & Defense Log */}
-      <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
-        {/* Cloud Deployment Telemetry */}
-        <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
-          <div className="flex items-center space-x-2 mb-3">
-            <Server className="w-4 h-4 text-indigo-400" />
+      {/* Automated Defense Actions */}
+      <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
+        <div className="flex items-center justify-between mb-3">
+          <div className="flex items-center space-x-2">
+            <Lock className="w-4 h-4 text-emerald-400" />
             <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
-              Cloud Infrastructure
+              Automated Defense Actions
             </h3>
           </div>
-          <div className="space-y-2 text-[11px] font-mono">
-            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400">Platform</span>
-              <span className="text-slate-200 font-semibold">{cloud.cloud_provider}</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400">Engine</span>
-              <span className="text-blue-400 font-semibold">{cloud.service_type}</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400">Region</span>
-              <span className="text-slate-300">{cloud.region}</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400">Revision</span>
-              <span className="text-slate-300">{cloud.revision}</span>
-            </div>
-            <div className="flex justify-between py-1.5 border-b border-slate-100 dark:border-slate-800/60">
-              <span className="text-slate-400">Storage</span>
-              <span className="text-emerald-400">{cloud.database_backend}</span>
-            </div>
-            <div className="flex justify-between py-1.5">
-              <span className="text-slate-400">Uptime</span>
-              <span className="text-slate-300">{cloud.uptime_formatted}</span>
-            </div>
-          </div>
+          <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-medium">
+            SIMULATED DEFENSE
+          </span>
         </div>
 
-        {/* Defense Actions Table */}
-        <div className="lg:col-span-2 p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
-          <div className="flex items-center justify-between mb-3">
-            <div className="flex items-center space-x-2">
-              <Lock className="w-4 h-4 text-emerald-400" />
-              <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
-                Automated Defense Actions
-              </h3>
-            </div>
-            <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-medium">
-              SIMULATED DEFENSE
-            </span>
-          </div>
-
-          <div className="overflow-x-auto">
-            <table className="w-full text-left text-[11px] font-mono">
-              <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-400 uppercase tracking-wider font-semibold">
-                <tr>
-                  <th className="py-2 px-3">Flow ID</th>
-                  <th className="py-2 px-3">Source IP</th>
-                  <th className="py-2 px-3">Port</th>
-                  <th className="py-2 px-3">Risk Level</th>
-                  <th className="py-2 px-3">Action</th>
-                  <th className="py-2 px-3">Mode</th>
+        <div className="overflow-x-auto">
+          <table className="w-full text-left text-[11px] font-mono">
+            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-400 uppercase tracking-wider font-semibold">
+              <tr>
+                <th className="py-2 px-3">Flow ID</th>
+                <th className="py-2 px-3">Source IP</th>
+                <th className="py-2 px-3">Port</th>
+                <th className="py-2 px-3">Risk Level</th>
+                <th className="py-2 px-3">Action</th>
+                <th className="py-2 px-3">Mode</th>
+              </tr>
+            </thead>
+            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+              {actions.slice(0, 5).map((act, i) => (
+                <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
+                  <td className="py-2 px-3 text-blue-400 font-semibold">{act.flow_id}</td>
+                  <td className="py-2 px-3 text-slate-300">{act.source_ip}</td>
+                  <td className="py-2 px-3 text-slate-400">{act.dest_port}</td>
+                  <td className="py-2 px-3">
+                    <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
+                      act.risk_level === 'High' ? 'bg-red-500/10 text-red-400 border border-red-500/25' :
+                      act.risk_level === 'Medium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/25' :
+                      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25'
+                    }`}>
+                      {act.risk_level}
+                    </span>
+                  </td>
+                  <td className="py-2 px-3 font-semibold text-slate-200">{act.action}</td>
+                  <td className="py-2 px-3">
+                    <span className="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">
+                      {act.status}
+                    </span>
+                  </td>
                 </tr>
-              </thead>
-              <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
-                {actions.slice(0, 5).map((act, i) => (
-                  <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                    <td className="py-2 px-3 text-blue-400 font-semibold">{act.flow_id}</td>
-                    <td className="py-2 px-3 text-slate-300">{act.source_ip}</td>
-                    <td className="py-2 px-3 text-slate-400">{act.dest_port}</td>
-                    <td className="py-2 px-3">
-                      <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                        act.risk_level === 'High' ? 'bg-red-500/10 text-red-400 border border-red-500/25' :
-                        act.risk_level === 'Medium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/25' :
-                        'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25'
-                      }`}>
-                        {act.risk_level}
-                      </span>
-                    </td>
-                    <td className="py-2 px-3 font-semibold text-slate-200">{act.action}</td>
-                    <td className="py-2 px-3">
-                      <span className="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">
-                        {act.status}
-                      </span>
-                    </td>
-                  </tr>
-                ))}
-              </tbody>
-            </table>
-          </div>
+              ))}
+            </tbody>
+          </table>
         </div>
       </div>
     </div>
