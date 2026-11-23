@@ -150,7 +150,7 @@ export default function Overview({ apiBase }) {
   }, [isSimulating, replayOffset, apiBase]);
 
   const riskDonutData = [
-    { name: 'High Risk', value: stats.high_risk_alerts || 15, color: '#ef4444' },
+    { name: 'High Risk', value: stats.high_risk_alerts || 15, color: '#e11d48' },
     { name: 'Medium Risk', value: stats.medium_risk_alerts || 5, color: '#f59e0b' },
     { name: 'Low Risk', value: stats.low_risk_alerts || 35, color: '#10b981' }
   ];
@@ -158,13 +158,13 @@ export default function Overview({ apiBase }) {
   return (
     <div className="space-y-5">
       {/* Sleek Action Ribbon */}
-      <div className="p-3.5 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm flex flex-wrap items-center justify-between gap-3">
+      <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs flex flex-wrap items-center justify-between gap-3">
         <div className="flex items-center space-x-3">
-          <div className={`p-2 rounded-lg ${isSimulating ? 'bg-red-500/10 text-red-400' : 'bg-indigo-500/10 text-indigo-400'}`}>
+          <div className={`p-2.5 rounded-lg ${isSimulating ? 'bg-rose-50 text-rose-600 border border-rose-200' : 'bg-indigo-50 text-indigo-600 border border-indigo-200'}`}>
             <Radio className={`w-4 h-4 ${isSimulating ? 'animate-pulse' : ''}`} />
           </div>
           <div>
-            <span className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+            <span className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
               Traffic Replay Engine
             </span>
           </div>
@@ -174,8 +174,8 @@ export default function Overview({ apiBase }) {
           onClick={() => setIsSimulating(!isSimulating)}
           className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-semibold text-xs transition-all shadow-sm ${
             isSimulating
-              ? 'bg-red-600 hover:bg-red-500 text-white shadow-red-600/20'
-              : 'bg-indigo-600 hover:bg-indigo-500 text-white shadow-indigo-600/20'
+              ? 'bg-rose-600 hover:bg-rose-700 text-white shadow-rose-600/20'
+              : 'bg-indigo-600 hover:bg-indigo-700 text-white shadow-indigo-600/20'
           }`}
         >
           {isSimulating ? (
@@ -195,67 +195,67 @@ export default function Overview({ apiBase }) {
       {/* KPI Cards Grid */}
       <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
         {/* Total Flows */}
-        <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs hover:shadow-sm transition-all">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Flows Analyzed</span>
-            <Activity className="w-4 h-4 text-blue-400" />
+            <Activity className="w-4 h-4 text-blue-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-slate-900 dark:text-white mono">
+          <div className="mt-2 text-2xl font-bold text-slate-900 mono">
             {(stats.total_flows_monitored || 300055).toLocaleString()}
           </div>
-          <div className="mt-1 flex items-center text-[11px] text-emerald-400 font-mono">
-            <ArrowUpRight className="w-3 h-3 mr-0.5" />
+          <div className="mt-1 flex items-center text-[11px] text-emerald-700 font-mono font-medium">
+            <ArrowUpRight className="w-3.5 h-3.5 mr-0.5 text-emerald-600" />
             <span>120 flows/min ingest rate</span>
           </div>
         </div>
 
         {/* Threat Alerts */}
-        <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs hover:shadow-sm transition-all">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Threat Alerts</span>
-            <ShieldAlert className="w-4 h-4 text-red-400" />
+            <ShieldAlert className="w-4 h-4 text-rose-600" />
           </div>
-          <div className="mt-2 text-2xl font-bold text-red-500 mono">
+          <div className="mt-2 text-2xl font-bold text-rose-600 mono">
             {(stats.total_alerts || 0).toLocaleString()}
           </div>
-          <div className="mt-1 text-[11px] text-slate-400 font-mono flex items-center gap-2">
-            <span className="text-red-400 font-medium">{stats.high_risk_alerts || 0} High</span>
-            <span>•</span>
-            <span className="text-amber-400 font-medium">{stats.medium_risk_alerts || 0} Medium</span>
+          <div className="mt-1 text-[11px] font-mono flex items-center gap-1.5">
+            <span className="text-rose-700 font-semibold bg-rose-50 border border-rose-200 px-1.5 py-0.2 rounded">{stats.high_risk_alerts || 0} High</span>
+            <span className="text-slate-300">•</span>
+            <span className="text-amber-700 font-semibold bg-amber-50 border border-amber-200 px-1.5 py-0.2 rounded">{stats.medium_risk_alerts || 0} Medium</span>
           </div>
         </div>
 
         {/* Active Model */}
-        <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs hover:shadow-sm transition-all">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Active Model</span>
-            <Cpu className="w-4 h-4 text-indigo-400" />
+            <Cpu className="w-4 h-4 text-indigo-600" />
           </div>
-          <div className="mt-2 text-lg font-bold text-indigo-400 mono">
+          <div className="mt-2 text-lg font-bold text-indigo-700 mono">
             {stats.active_model === 'rf_v2' ? 'Random Forest v2' : 'Random Forest v1'}
           </div>
-          <div className="mt-1 flex items-center text-[11px] text-emerald-400 font-mono">
-            <CheckCircle2 className="w-3 h-3 mr-1" />
+          <div className="mt-1 flex items-center text-[11px] text-emerald-700 font-mono font-medium">
+            <CheckCircle2 className="w-3.5 h-3.5 mr-1 text-emerald-600" />
             <span>99.73% F1 • 1.81 MB</span>
           </div>
         </div>
 
         {/* Drift Status */}
-        <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
-          <div className="flex items-center justify-between text-slate-400">
+        <div className="p-4 rounded-xl bg-white border border-slate-200/90 shadow-xs hover:shadow-sm transition-all">
+          <div className="flex items-center justify-between text-slate-500">
             <span className="text-[11px] font-semibold uppercase tracking-wider">Drift Sentinel</span>
-            <AlertTriangle className={`w-4 h-4 ${stats.drift_status === 'CRITICAL DRIFT' ? 'text-amber-400' : 'text-emerald-400'}`} />
+            <AlertTriangle className={`w-4 h-4 ${stats.drift_status === 'CRITICAL DRIFT' ? 'text-amber-600' : 'text-emerald-600'}`} />
           </div>
           <div className="mt-2">
-            <span className={`inline-block px-2.5 py-1 rounded text-xs font-mono font-bold ${
+            <span className={`inline-block px-2.5 py-0.5 rounded text-xs font-mono font-bold ${
               stats.drift_status === 'CRITICAL DRIFT' 
-                ? 'bg-amber-500/10 text-amber-400 border border-amber-500/25' 
-                : 'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25'
+                ? 'bg-amber-50 text-amber-800 border border-amber-200' 
+                : 'bg-emerald-50 text-emerald-700 border border-emerald-200'
             }`}>
               {stats.drift_status || 'NORMAL'}
             </span>
           </div>
-          <div className="mt-1 text-[11px] text-slate-400 font-mono">
+          <div className="mt-1 text-[11px] text-slate-500 font-mono">
             KS-Test &amp; PSI Sentinel
           </div>
         </div>
@@ -264,20 +264,20 @@ export default function Overview({ apiBase }) {
       {/* Main Visualizations Row */}
       <div className="grid grid-cols-1 lg:grid-cols-3 gap-5">
         {/* Real-time Ingest Timeline */}
-        <div className="lg:col-span-2 p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
+        <div className="lg:col-span-2 p-5 rounded-xl bg-white border border-slate-200/90 shadow-xs">
           <div className="flex items-center justify-between mb-3">
             <div className="flex items-center space-x-2">
-              <Activity className="w-4 h-4 text-blue-400" />
-              <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+              <Activity className="w-4 h-4 text-blue-600" />
+              <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
                 Real-Time Traffic Telemetry
               </h3>
             </div>
             <div className="flex items-center gap-3 text-[11px] font-mono">
-              <span className="flex items-center gap-1.5 text-blue-400">
-                <span className="w-2 h-2 rounded-full bg-blue-500"></span> Total Flows
+              <span className="flex items-center gap-1.5 text-blue-600 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-blue-600"></span> Total Flows
               </span>
-              <span className="flex items-center gap-1.5 text-red-400">
-                <span className="w-2 h-2 rounded-full bg-red-500"></span> Threat Ingest
+              <span className="flex items-center gap-1.5 text-rose-600 font-semibold">
+                <span className="w-2 h-2 rounded-full bg-rose-500"></span> Threat Ingest
               </span>
             </div>
           </div>
@@ -286,32 +286,32 @@ export default function Overview({ apiBase }) {
               <AreaChart data={timelineData}>
                 <defs>
                   <linearGradient id="flowGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.35}/>
+                    <stop offset="5%" stopColor="#3b82f6" stopOpacity={0.25}/>
                     <stop offset="95%" stopColor="#3b82f6" stopOpacity={0.0}/>
                   </linearGradient>
                   <linearGradient id="attackGrad" x1="0" y1="0" x2="0" y2="1">
-                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.45}/>
+                    <stop offset="5%" stopColor="#ef4444" stopOpacity={0.35}/>
                     <stop offset="95%" stopColor="#ef4444" stopOpacity={0.0}/>
                   </linearGradient>
                 </defs>
-                <XAxis dataKey="time" stroke="#64748b" fontSize={10} tickLine={false} />
-                <YAxis stroke="#64748b" fontSize={10} tickLine={false} />
-                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px', fontFamily: 'monospace' }} />
-                <Area type="monotone" dataKey="flows" stroke="#3b82f6" strokeWidth={1.5} fillOpacity={1} fill="url(#flowGrad)" />
-                <Area type="monotone" dataKey="attacks" stroke="#ef4444" strokeWidth={1.5} fillOpacity={1} fill="url(#attackGrad)" />
+                <XAxis dataKey="time" stroke="#94a3b8" fontSize={10} tickLine={false} />
+                <YAxis stroke="#94a3b8" fontSize={10} tickLine={false} />
+                <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#0f172a', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontSize: '11px', fontFamily: 'monospace' }} />
+                <Area type="monotone" dataKey="flows" stroke="#2563eb" strokeWidth={2} fillOpacity={1} fill="url(#flowGrad)" />
+                <Area type="monotone" dataKey="attacks" stroke="#dc2626" strokeWidth={2} fillOpacity={1} fill="url(#attackGrad)" />
               </AreaChart>
             </ResponsiveContainer>
           </div>
         </div>
 
         {/* Severity Breakdown Donut */}
-        <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm flex flex-col justify-between">
+        <div className="p-5 rounded-xl bg-white border border-slate-200/90 shadow-xs flex flex-col justify-between">
           <div className="flex items-center justify-between mb-2">
-            <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono flex items-center gap-2">
-              <ShieldAlert className="w-4 h-4 text-purple-400" />
+            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono flex items-center gap-2">
+              <ShieldAlert className="w-4 h-4 text-purple-600" />
               Risk Severity
             </h3>
-            <span className="text-[10px] font-mono text-slate-400">SHAP Binned</span>
+            <span className="text-[10px] font-mono text-slate-500 bg-slate-100 px-1.5 py-0.5 rounded">SHAP Binned</span>
           </div>
 
           <div className="h-44 my-auto">
@@ -322,63 +322,63 @@ export default function Overview({ apiBase }) {
                     <Cell key={`cell-${index}`} fill={entry.color} />
                   ))}
                 </Pie>
-                <Tooltip contentStyle={{ backgroundColor: '#0f172a', borderColor: '#334155', borderRadius: '8px', fontSize: '11px' }} />
+                <Tooltip contentStyle={{ backgroundColor: '#ffffff', borderColor: '#e2e8f0', color: '#0f172a', borderRadius: '8px', boxShadow: '0 4px 6px -1px rgb(0 0 0 / 0.1)', fontSize: '11px' }} />
               </PieChart>
             </ResponsiveContainer>
           </div>
 
-          <div className="flex justify-around text-[10px] font-mono pt-2 border-t border-slate-100 dark:border-slate-800/80">
-            <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-red-500"></span>High</div>
-            <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-amber-500"></span>Med</div>
-            <div className="flex items-center gap-1.5"><span className="w-2 h-2 rounded-full bg-emerald-500"></span>Low</div>
+          <div className="flex justify-around text-[10px] font-mono pt-2 border-t border-slate-100">
+            <div className="flex items-center gap-1.5 font-semibold text-rose-600"><span className="w-2 h-2 rounded-full bg-rose-500"></span>High</div>
+            <div className="flex items-center gap-1.5 font-semibold text-amber-600"><span className="w-2 h-2 rounded-full bg-amber-500"></span>Med</div>
+            <div className="flex items-center gap-1.5 font-semibold text-emerald-600"><span className="w-2 h-2 rounded-full bg-emerald-500"></span>Low</div>
           </div>
         </div>
       </div>
 
       {/* Automated Defense Actions */}
-      <div className="p-4 rounded-xl bg-white dark:bg-[#0f172a] border border-slate-200 dark:border-slate-800/80 shadow-sm">
+      <div className="p-5 rounded-xl bg-white border border-slate-200/90 shadow-xs">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <Lock className="w-4 h-4 text-emerald-400" />
-            <h3 className="text-xs font-bold text-slate-900 dark:text-white uppercase tracking-wider font-mono">
+            <Lock className="w-4 h-4 text-emerald-600" />
+            <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
               Automated Defense Actions
             </h3>
           </div>
-          <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-500/10 text-emerald-400 border border-emerald-500/20 font-mono font-medium">
+          <span className="text-[10px] px-2 py-0.5 rounded bg-emerald-50 text-emerald-700 border border-emerald-200 font-mono font-bold">
             SIMULATED DEFENSE
           </span>
         </div>
 
         <div className="overflow-x-auto">
           <table className="w-full text-left text-[11px] font-mono">
-            <thead className="bg-slate-50 dark:bg-slate-800/50 text-slate-400 uppercase tracking-wider font-semibold">
+            <thead className="bg-slate-50 text-slate-600 uppercase tracking-wider font-semibold border-b border-slate-200">
               <tr>
-                <th className="py-2 px-3">Flow ID</th>
-                <th className="py-2 px-3">Source IP</th>
-                <th className="py-2 px-3">Port</th>
-                <th className="py-2 px-3">Risk Level</th>
-                <th className="py-2 px-3">Action</th>
-                <th className="py-2 px-3">Mode</th>
+                <th className="py-2.5 px-3">Flow ID</th>
+                <th className="py-2.5 px-3">Source IP</th>
+                <th className="py-2.5 px-3">Port</th>
+                <th className="py-2.5 px-3">Risk Level</th>
+                <th className="py-2.5 px-3">Action</th>
+                <th className="py-2.5 px-3">Mode</th>
               </tr>
             </thead>
-            <tbody className="divide-y divide-slate-100 dark:divide-slate-800/60">
+            <tbody className="divide-y divide-slate-100">
               {actions.slice(0, 5).map((act, i) => (
-                <tr key={i} className="hover:bg-slate-50 dark:hover:bg-slate-800/40 transition-colors">
-                  <td className="py-2 px-3 text-blue-400 font-semibold">{act.flow_id}</td>
-                  <td className="py-2 px-3 text-slate-300">{act.source_ip}</td>
-                  <td className="py-2 px-3 text-slate-400">{act.dest_port}</td>
-                  <td className="py-2 px-3">
+                <tr key={i} className="hover:bg-slate-50/80 transition-colors">
+                  <td className="py-2.5 px-3 text-indigo-600 font-bold">{act.flow_id}</td>
+                  <td className="py-2.5 px-3 text-slate-800 font-medium">{act.source_ip}</td>
+                  <td className="py-2.5 px-3 text-slate-500">{act.dest_port}</td>
+                  <td className="py-2.5 px-3">
                     <span className={`px-2 py-0.5 rounded text-[10px] font-bold ${
-                      act.risk_level === 'High' ? 'bg-red-500/10 text-red-400 border border-red-500/25' :
-                      act.risk_level === 'Medium' ? 'bg-amber-500/10 text-amber-400 border border-amber-500/25' :
-                      'bg-emerald-500/10 text-emerald-400 border border-emerald-500/25'
+                      act.risk_level === 'High' ? 'bg-rose-50 text-rose-700 border border-rose-200' :
+                      act.risk_level === 'Medium' ? 'bg-amber-50 text-amber-700 border border-amber-200' :
+                      'bg-emerald-50 text-emerald-700 border border-emerald-200'
                     }`}>
                       {act.risk_level}
                     </span>
                   </td>
-                  <td className="py-2 px-3 font-semibold text-slate-200">{act.action}</td>
-                  <td className="py-2 px-3">
-                    <span className="text-[10px] text-slate-400 bg-slate-800 px-1.5 py-0.5 rounded">
+                  <td className="py-2.5 px-3 font-semibold text-slate-800">{act.action}</td>
+                  <td className="py-2.5 px-3">
+                    <span className="text-[10px] text-slate-600 bg-slate-100 border border-slate-200 px-1.5 py-0.5 rounded">
                       {act.status}
                     </span>
                   </td>
