@@ -85,21 +85,9 @@ function MainApp() {
             <Shield className="w-5 h-5" />
           </div>
           <div>
-            <div className="flex items-center gap-2.5">
-              <h1 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white uppercase font-mono">
-                Sentinel IDS
-              </h1>
-              <span className="flex items-center gap-1 text-[10px] font-mono font-medium px-2 py-0.5 rounded-full bg-emerald-500/10 text-emerald-400 border border-emerald-500/25">
-                <span className="w-1.5 h-1.5 rounded-full bg-emerald-400 animate-pulse"></span>
-                SOC ACTIVE
-              </span>
-              <span className="hidden sm:inline-block text-[10px] font-mono px-2 py-0.5 rounded-md bg-indigo-500/10 text-indigo-400 border border-indigo-500/20">
-                CIC-IDS2017
-              </span>
-            </div>
-            <p className="text-[11px] text-slate-400 dark:text-slate-400">
-              Cloud-Based Intelligent Network Traffic Monitoring &amp; Intrusion Detection
-            </p>
+            <h1 className="text-sm font-bold tracking-tight text-slate-900 dark:text-white uppercase font-mono">
+              Sentinel IDS
+            </h1>
           </div>
         </div>
 
