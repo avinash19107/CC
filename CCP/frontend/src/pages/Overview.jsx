@@ -48,6 +48,22 @@ const DEFAULT_ACTIONS = [
   { flow_id: "flow-f551b2", source_ip: "192.168.1.200", dest_port: 8080, risk_level: "Low", action: "Log only", status: "simulated" }
 ];
 
+// Robust JSON fetch that ignores non-JSON (HTML) responses and connection errors
+const safeFetchJson = async (url, options = {}) => {
+  try {
+    const res = await fetch(url, options);
+    if (!res.ok) return null;
+    const text = await res.text();
+    try {
+      return JSON.parse(text);
+    } catch {
+      return null;
+    }
+  } catch (err) {
+    return null;
+  }
+};
+
 export default function Overview({ apiBase }) {
   const [stats, setStats] = useState(DEFAULT_STATS);
   const [cloud, setCloud] = useState(DEFAULT_CLOUD);
@@ -67,17 +83,19 @@ export default function Overview({ apiBase }) {
   const fetchTelemetry = async () => {
     try {
       const [resStats, resCloud, resActions] = await Promise.all([
-        fetch(`${apiBase}/stats`).then(r => r.ok ? r.json() : null),
-        fetch(`${apiBase}/cloud`).then(r => r.ok ? r.json() : null),
-        fetch(`${apiBase}/actions`).then(r => r.ok ? r.json() : null)
+        safeFetchJson(`${apiBase}/stats`),
+        safeFetchJson(`${apiBase}/cloud`),
+        safeFetchJson(`${apiBase}/actions`)
       ]);
 
-      if (resStats) {
+      if (resStats && resStats.total_flows_monitored) {
         setStats(resStats);
         setBackendConnected(true);
       }
       if (resCloud) setCloud(resCloud);
-      if (resActions && resActions.length > 0) setActions(resActions);
+      if (resActions && Array.isArray(resActions) && resActions.length > 0) {
+        setActions(resActions);
+      }
 
       setTimelineData(prev => {
         const timeLabel = new Date().toLocaleTimeString([], { hour: '2-digit', minute: '2-digit', second: '2-digit' });
@@ -105,15 +123,15 @@ export default function Overview({ apiBase }) {
     if (isSimulating) {
       simInterval = setInterval(async () => {
         try {
-          const replayRes = await fetch(`${apiBase}/ingest/replay`, {
+          const replayRes = await safeFetchJson(`${apiBase}/ingest/replay`, {
             method: 'POST',
             headers: { 'Content-Type': 'application/json' },
             body: JSON.stringify({ batch_size: 5, offset: replayOffset })
-          }).then(r => r.json());
+          });
 
           if (replayRes && replayRes.flows) {
             setReplayOffset(prev => prev + 5);
-            await fetch(`${apiBase}/predict`, {
+            await safeFetchJson(`${apiBase}/predict`, {
               method: 'POST',
               headers: { 'Content-Type': 'application/json' },
               body: JSON.stringify({ flows: replayRes.flows })
@@ -163,7 +181,7 @@ export default function Overview({ apiBase }) {
               </span>
             </div>
             <p className="text-[11px] text-slate-400 font-mono">
-              Replays 500 held-out flows (70% Benign, 30% Attack) through ML engine
+              Replays 500 held-out flows (70% Benign, 30% Attack) • Target: <code className="text-indigo-400">{apiBase.replace(/^https?:\/\//, '')}</code>
             </p>
           </div>
         </div>

@@ -19,17 +19,26 @@ export default function Drift({ apiBase }) {
   const fetchDrift = async () => {
     try {
       setIsChecking(true);
+      const safeFetch = async (url, opts) => {
+        try {
+          const r = await fetch(url, opts);
+          if (!r.ok) return null;
+          const t = await r.text();
+          return JSON.parse(t);
+        } catch { return null; }
+      };
+
       const [resDrift, resMetrics, resStats] = await Promise.all([
-        fetch(`${apiBase}/drift/check`, { method: 'POST' }).then(r => r.json()),
-        fetch(`${apiBase}/metrics`).then(r => r.json()),
-        fetch(`${apiBase}/stats`).then(r => r.json())
+        safeFetch(`${apiBase}/drift/check`, { method: 'POST' }),
+        safeFetch(`${apiBase}/metrics`),
+        safeFetch(`${apiBase}/stats`)
       ]);
-      setDriftData(resDrift);
-      setMetrics(resMetrics);
-      setActiveModel(resStats.active_model || 'rf_v1');
+      if (resDrift) setDriftData(resDrift);
+      if (resMetrics) setMetrics(resMetrics);
+      if (resStats?.active_model) setActiveModel(resStats.active_model);
       setIsChecking(false);
     } catch (err) {
-      console.error(err);
+      console.warn("Drift check error:", err);
       setIsChecking(false);
     }
   };

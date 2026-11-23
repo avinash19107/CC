@@ -52,7 +52,24 @@ class ErrorBoundary extends Component {
 function MainApp() {
   const [activeTab, setActiveTab] = useState('overview');
   const [darkMode, setDarkMode] = useState(true);
-  const apiBase = import.meta.env.VITE_API_BASE || '/api';
+
+  // Smart API Base URL:
+  // 1. Explicit VITE_API_BASE environment variable if provided
+  // 2. If running locally (localhost / 127.0.0.1), use http://127.0.0.1:8000
+  // 3. Otherwise (on Vercel or cloud deployment), use the live Render backend URL: https://cloud-ids-backend.onrender.com
+  const getApiBase = () => {
+    if (import.meta.env.VITE_API_BASE) {
+      return import.meta.env.VITE_API_BASE;
+    }
+    if (typeof window !== 'undefined') {
+      const host = window.location.hostname;
+      if (host === 'localhost' || host === '127.0.0.1') {
+        return 'http://127.0.0.1:8000';
+      }
+    }
+    return 'https://cloud-ids-backend.onrender.com';
+  };
+  const apiBase = getApiBase();
 
   const navItems = [
     { id: 'overview', label: 'Overview', icon: Activity, tag: 'Live' },
@@ -92,7 +109,7 @@ function MainApp() {
         <div className="flex items-center space-x-2.5">
           <div className="hidden md:flex items-center gap-1.5 px-3 py-1 rounded-lg bg-slate-100 dark:bg-slate-800/50 border border-slate-200 dark:border-slate-700/50 text-[11px] font-mono text-slate-400">
             <Radio className="w-3 h-3 text-emerald-400" />
-            <span>US-East (Virginia)</span>
+            <span>API: {apiBase.replace(/^https?:\/\//, '')}</span>
           </div>
 
           <button

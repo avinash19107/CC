@@ -17,16 +17,25 @@ export default function Threats({ apiBase }) {
 
   const fetchAlerts = () => {
     fetch(`${apiBase}/alerts?limit=25&risk_level=${filter}`)
-      .then(r => r.json())
-      .then(data => {
-        setAlerts(data.alerts || []);
-        if (data.alerts && data.alerts.length > 0 && !selectedAlert) {
-          setSelectedAlert(data.alerts[0]);
+      .then(r => r.ok ? r.text() : null)
+      .then(text => {
+        if (text) {
+          try {
+            const data = JSON.parse(text);
+            if (data && data.alerts) {
+              setAlerts(data.alerts);
+              if (data.alerts.length > 0 && !selectedAlert) {
+                setSelectedAlert(data.alerts[0]);
+              }
+            }
+          } catch (e) {
+            console.warn("Alerts parse error:", e);
+          }
         }
         setLoading(false);
       })
       .catch(e => {
-        console.error(e);
+        console.warn("Alerts fetch error:", e);
         setLoading(false);
       });
   };
@@ -34,9 +43,16 @@ export default function Threats({ apiBase }) {
   useEffect(() => {
     fetchAlerts();
     fetch(`${apiBase}/explain/global`)
-      .then(r => r.json())
-      .then(data => setGlobalImportance(data.ranking || []))
-      .catch(console.error);
+      .then(r => r.ok ? r.text() : null)
+      .then(text => {
+        if (text) {
+          try {
+            const data = JSON.parse(text);
+            if (data && data.ranking) setGlobalImportance(data.ranking);
+          } catch {}
+        }
+      })
+      .catch(console.warn);
   }, [apiBase, filter]);
 
   const shapChartData = selectedAlert?.top_features ? selectedAlert.top_features.map(f => ({
