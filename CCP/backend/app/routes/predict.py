@@ -78,14 +78,19 @@ def predict_flows(payload: Union[Dict[str, Any], BatchPredictRequest, List[Dict[
             }
             db.save_alert(alert_doc)
             
-            # Record simulated automated response action
-            db.save_simulated_action({
-                "flow_id": res["flow_id"],
-                "source_ip": item.get("source_ip", "192.168.1.100"),
-                "dest_port": item.get("dest_port", features_dict.get("Destination Port", 80)),
-                "risk_level": res["risk_level"],
-                "action": res["simulated_action"]
-            })
+        # Record simulated automated defense action for each IP config (High, Medium, Low)
+        action_map = {
+            "High": "Block IP",
+            "Medium": "Rate-limit",
+            "Low": "Log only"
+        }
+        db.save_simulated_action({
+            "flow_id": res["flow_id"],
+            "source_ip": item.get("source_ip", "192.168.1.100"),
+            "dest_port": item.get("dest_port", features_dict.get("Destination Port", 80)),
+            "risk_level": res["risk_level"],
+            "action": action_map.get(res["risk_level"], "Log only")
+        })
 
         results.append(PredictionResult(**res))
 

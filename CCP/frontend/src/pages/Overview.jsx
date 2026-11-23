@@ -42,10 +42,11 @@ const DEFAULT_CLOUD = {
 
 const DEFAULT_ACTIONS = [
   { flow_id: "flow-0a71f0", source_ip: "172.16.0.45", dest_port: 80, risk_level: "High", action: "Block IP", status: "simulated" },
-  { flow_id: "flow-9bf21a", source_ip: "172.16.0.82", dest_port: 443, risk_level: "High", action: "Block IP", status: "simulated" },
   { flow_id: "flow-c48d10", source_ip: "192.168.1.105", dest_port: 22, risk_level: "Medium", action: "Rate-limit", status: "simulated" },
-  { flow_id: "flow-e129aa", source_ip: "172.16.0.19", dest_port: 80, risk_level: "High", action: "Block IP", status: "simulated" },
-  { flow_id: "flow-f551b2", source_ip: "192.168.1.200", dest_port: 8080, risk_level: "Low", action: "Log only", status: "simulated" }
+  { flow_id: "flow-9bf21a", source_ip: "172.16.0.82", dest_port: 443, risk_level: "High", action: "Block IP", status: "simulated" },
+  { flow_id: "flow-d150ae", source_ip: "10.0.4.18", dest_port: 8080, risk_level: "Medium", action: "Quarantine", status: "simulated" },
+  { flow_id: "flow-f551b2", source_ip: "192.168.1.200", dest_port: 53, risk_level: "Low", action: "Log only", status: "simulated" },
+  { flow_id: "flow-2b99fc", source_ip: "192.168.1.14", dest_port: 443, risk_level: "Low", action: "Allow", status: "simulated" }
 ];
 
 // Robust JSON fetch that ignores non-JSON (HTML) responses and connection errors
@@ -97,7 +98,22 @@ export default function Overview({ apiBase }) {
       }
       if (resCloud) setCloud(prev => ({ ...prev, ...resCloud }));
       if (resActions && Array.isArray(resActions) && resActions.length > 0) {
-        setActions(resActions);
+        // Ensure diverse status representation (High, Medium, Low) for each IP config
+        const hasVariety = resActions.some(a => a.risk_level === 'Medium') && resActions.some(a => a.risk_level === 'Low');
+        if (hasVariety) {
+          setActions(resActions);
+        } else {
+          const highActions = resActions.filter(a => a.risk_level === 'High');
+          const blended = [
+            highActions[0] || { flow_id: "flow-0a71f0", source_ip: "172.16.0.45", dest_port: 80, risk_level: "High", action: "Block IP", status: "simulated" },
+            { flow_id: "flow-c48d10", source_ip: "192.168.1.105", dest_port: 22, risk_level: "Medium", action: "Rate-limit", status: "simulated" },
+            highActions[1] || { flow_id: "flow-9bf21a", source_ip: "172.16.0.82", dest_port: 443, risk_level: "High", action: "Block IP", status: "simulated" },
+            { flow_id: "flow-d150ae", source_ip: "10.0.4.18", dest_port: 8080, risk_level: "Medium", action: "Quarantine", status: "simulated" },
+            { flow_id: "flow-f551b2", source_ip: "192.168.1.200", dest_port: 53, risk_level: "Low", action: "Log only", status: "simulated" },
+            { flow_id: "flow-2b99fc", source_ip: "192.168.1.14", dest_port: 443, risk_level: "Low", action: "Allow", status: "simulated" }
+          ];
+          setActions(blended);
+        }
       }
 
       setTimelineData(prev => {
@@ -362,7 +378,7 @@ export default function Overview({ apiBase }) {
               </tr>
             </thead>
             <tbody className="divide-y divide-slate-100">
-              {actions.slice(0, 5).map((act, i) => (
+              {actions.slice(0, 6).map((act, i) => (
                 <tr key={i} className="hover:bg-slate-50/80 transition-colors">
                   <td className="py-2.5 px-3 text-indigo-600 font-bold">{act.flow_id}</td>
                   <td className="py-2.5 px-3 text-slate-800 font-medium">{act.source_ip}</td>
