@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { 
   ShieldAlert, Activity, Cpu, Server, Play, Square, 
-  AlertTriangle, CheckCircle2, Lock, ArrowUpRight, Radio, RefreshCw
+  AlertTriangle, CheckCircle2, ShieldCheck, ArrowUpRight, Radio, RefreshCw
 } from 'lucide-react';
 import { 
   ResponsiveContainer, AreaChart, Area, XAxis, YAxis, 
@@ -339,7 +339,7 @@ export default function Overview({ apiBase }) {
       <div className="p-5 rounded-xl bg-white border border-slate-200/90 shadow-xs">
         <div className="flex items-center justify-between mb-3">
           <div className="flex items-center space-x-2">
-            <Lock className="w-4 h-4 text-emerald-600" />
+            <ShieldCheck className="w-4 h-4 text-emerald-600" />
             <h3 className="text-xs font-bold text-slate-900 uppercase tracking-wider font-mono">
               Automated Defense Actions
             </h3>
